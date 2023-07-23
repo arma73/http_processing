@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  rabbitmq3:
+    container_name: "rabbitmq" # The name of the container running RabbitMQ
+    image: rabbitmq:3.12-management # Docker image to be used, including the RabbitMQ management plugin
+    env_file:
+      - .env # Load environment variables from the .env file in the same directory
+    ports:
+      - "5672:5672" # Map container's 5672 port to the host's 5672 port for AMQP communication
+      - "15672:15672" # Map container's 15672 port to the host's 15672 port for management UI
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5" # Set the CPU limit for the RabbitMQ container to 1.5 CPUs
+          memory: 2G # Set the memory limit for the RabbitMQ container to 2GB
+    networks:
+      - rabbitmq_network # Attach the RabbitMQ service to the custom bridge network named 'rabbitmq_network'
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"] # Health check command for the RabbitMQ container
+      interval: 30s # Interval between health checks
+      timeout: 10s # Timeout for each health check attempt
+      retries: 3 # Number of retries before considering the container unhealthy
+
+networks:
+  rabbitmq_network:
+    driver: bridge # Define the custom bridge network 'rabbitmq_network' for the RabbitMQ service
