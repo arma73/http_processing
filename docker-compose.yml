@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   rabbitmq3:
@@ -17,7 +17,7 @@ services:
     networks:
       - rabbitmq_network # Attach the RabbitMQ service to the custom bridge network named 'rabbitmq_network'
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "check_running"] # Health check command for the RabbitMQ container
+      test: [ "CMD", "rabbitmq-diagnostics", "check_running" ] # Health check command for the RabbitMQ container
       interval: 30s # Interval between health checks
       timeout: 10s # Timeout for each health check attempt
       retries: 3 # Number of retries before considering the container unhealthy
